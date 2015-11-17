@@ -1,0 +1,85 @@
+----------------------------------------------------------activemq  start
+activemq 启动
+wget http://www.us.apache.org/dist/activemq/5.12.0/apache-activemq-5.12.0-bin.zip
+unzip apache-activemq-5.12.0-bin.zip
+chmod  777 /u01/apache-activemq-5.12.0/bin/*
+/u01/apache-activemq-5.12.0/bin/activemq start
+tail  /u01/apache-activemq-5.12.0/data/activemq.log  -f 
+
+jdk1.7以上
+wget http://www.us.apache.org/dist/activemq/5.12.1/apache-activemq-5.12.1-bin.tar.gz
+
+jdk1.6以上
+wget http://www.eu.apache.org/dist/activemq/5.10.2/apache-activemq-5.10.2-bin.tar.gz
+
+----------------------------------------------------------activemq  end
+
+
+
+
+
+
+----------------------------------------------------------mysql start
+可以参照下面的文档进行安装mysql
+http://jingyan.baidu.com/article/acf728fd10c3d6f8e510a3ef.html
+
+
+
+犹豫安装后远程无法用root登录，需要修改一下root的登录权限，下面是进行权限修改
+首先一个SSH连接到服务器
+数据库配置
+service mysqld stop
+/etc/init.d/mysql stop   (service mysqld stop )
+/usr/bin/mysqld_safe --skip-grant-tables
+
+
+另外开个SSH连接
+[root@localhost ~]# mysql
+mysql>use mysql
+mysql>update user set password=password("bx123456") where user="root";
+mysql>GRANT ALL PRIVILEGES ON *.* TO 'root'@'%'  IDENTIFIED BY 'bx123456'  WITH GRANT OPTION;
+mysql>flush privileges;
+mysql>exit
+mysql -u root -p
+
+
+修改后的账户为root,密码为bx123456，可以根据情况自定义
+创建一个数据库：sms2 
+----------------------------------------------------------mysql end
+
+
+
+
+
+
+
+
+----------------------------------------------------------jdk安装
+安装jdk 8
+yum search java-1.8.0-openjdk
+yum install java-1.8.0-openjdk
+
+安装后到此目录看看有没有jdk8
+/usr/lib/jvm/
+
+安装jdk时候yum意外中断，导致依然识别到yum正在运行的情况下可以使用下面这个命令
+rm -f /var/run/yum.pid
+----------------------------------------------------------jdk安装
+
+
+
+
+
+-----------------------------------------------------------启动短信接口 start
+启动程序第一种方式
+/usr/lib/jvm/jre-1.8.0/bin/java -jar  sms2-0.0.1-SNAPSHOT.jar  &
+
+
+启动程序第二种方式
+打包成war可以发布到tomcat,但是必须发布到到tomcat8以上,并修改tomcat8的JAVA_HOME环境变量为java 8
+      vi /u01/tomcat-sms/apache-tomcat-8.0.26/bin/catalina.sh   
+	  export JAVA_HOME="/usr/lib/jvm/jre-1.8.0"
+-----------------------------------------------------------启动短信接口 end
+
+
+
