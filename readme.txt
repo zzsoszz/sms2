@@ -5,3 +5,6 @@ D:\bxdev\trunck\tool\eclipse-java-mars-R-win32-x86_64
 
 
 详细操作流程参见doc目录下的detail.txt
+
+mvn package
+mvn spring-boot:run
